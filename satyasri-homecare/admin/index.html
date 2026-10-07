@@ -19,7 +19,10 @@
     <img src="/assets/img/logo-icon.png" alt="" width="56" height="56">
     <h1>Satyasri enquiries</h1>
     <label for="pw">Admin password</label>
-    <input id="pw" type="password" autocomplete="current-password" required>
+    <div class="pw">
+      <input id="pw" type="password" autocomplete="current-password" required>
+      <button class="pw__toggle" id="pwToggle" type="button" aria-label="Show password" aria-pressed="false">Show</button>
+    </div>
     <label class="check"><input type="checkbox" id="remember"> Keep me signed in on this device</label>
     <button class="btn btn--blue" type="submit">Sign in</button>
     <p class="login__err" id="loginErr" role="alert"></p>

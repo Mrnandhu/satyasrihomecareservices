@@ -239,6 +239,16 @@
     $('csvBtn').hidden = v !== 'enquiries';
   }));
 
+  // Show / hide password
+  $('pwToggle').addEventListener('click', () => {
+    const show = $('pw').type === 'password';
+    $('pw').type = show ? 'text' : 'password';
+    $('pwToggle').textContent = show ? 'Hide' : 'Show';
+    $('pwToggle').setAttribute('aria-pressed', String(show));
+    $('pwToggle').setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+    $('pw').focus();
+  });
+
   // Events
   $('loginForm').addEventListener('submit', async (ev) => {
     ev.preventDefault();
@@ -249,6 +259,7 @@
       (($('remember').checked) ? localStorage : sessionStorage).setItem(KEY, password);
       all = data.enquiries;
       loginView.hidden = true; appView.hidden = false;
+      $('pw').type = 'password'; $('pwToggle').textContent = 'Show'; $('pwToggle').setAttribute('aria-pressed', 'false');
       render();
       loadReviews();
     } catch (e) {
