@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Dashboard | Satyasri Home Care</title>
+<link rel="icon" href="/assets/img/favicon-48.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/src/styles/admin.css">
+</head>
+<body>
+
+<!-- Login -->
+<main class="login" id="loginView">
+  <form class="login__box" id="loginForm">
+    <img src="/assets/img/logo-icon.png" alt="" width="56" height="56">
+    <h1>Satyasri enquiries</h1>
+    <label for="pw">Admin password</label>
+    <input id="pw" type="password" autocomplete="current-password" required>
+    <label class="check"><input type="checkbox" id="remember"> Keep me signed in on this device</label>
+    <button class="btn btn--blue" type="submit">Sign in</button>
+    <p class="login__err" id="loginErr" role="alert"></p>
+  </form>
+</main>
+
+<!-- Dashboard -->
+<div class="app" id="appView" hidden>
+  <header class="bar">
+    <div class="bar__in">
+      <a class="brand" href="/" title="Open website"><img src="/assets/img/logo-icon.png" alt="" width="36" height="36"> Satyasri</a>
+      <div class="bar__actions">
+        <button class="btn btn--line" id="refreshBtn" type="button">Refresh</button>
+        <button class="btn btn--line" id="csvBtn" type="button">Download CSV</button>
+        <button class="btn btn--text" id="logoutBtn" type="button">Sign out</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="views" aria-label="Dashboard sections">
+    <button class="view-btn" type="button" data-view="enquiries" aria-current="page">Enquiries <span class="badge" id="badge-enq" hidden></span></button>
+    <button class="view-btn" type="button" data-view="reviews">Reviews <span class="badge" id="badge-rev" hidden></span></button>
+  </nav>
+
+  <main class="main" id="enquiriesView">
+    <div class="tabs" role="tablist" aria-label="Filter by status">
+      <button role="tab" class="tab" data-filter="all" aria-selected="true">All <b id="c-all">0</b></button>
+      <button role="tab" class="tab tab--new" data-filter="new" aria-selected="false">New <b id="c-new">0</b></button>
+      <button role="tab" class="tab tab--contacted" data-filter="contacted" aria-selected="false">Contacted <b id="c-contacted">0</b></button>
+      <button role="tab" class="tab tab--completed" data-filter="completed" aria-selected="false">Completed <b id="c-completed">0</b></button>
+    </div>
+
+    <div class="filters">
+      <input type="search" id="search" placeholder="Search name, phone or location" aria-label="Search enquiries">
+      <select id="serviceFilter" aria-label="Filter by service">
+        <option value="">All services</option>
+        <option>Patient Care</option>
+        <option>Elder Care</option>
+        <option>Children Care</option>
+        <option>Maid Service</option>
+        <option>Cooking Service</option>
+        <option>24/7 Home Care</option>
+      </select>
+    </div>
+
+    <p class="msg" id="msg" role="status"></p>
+    <ul class="list" id="list"></ul>
+  </main>
+
+  <main class="main" id="reviewsView" hidden>
+    <section class="ask">
+      <h2>Ask customers for a review</h2>
+      <p>Send this link after the service. It opens the review form directly. New reviews wait here until you approve them, and only approved reviews appear on the website.</p>
+      <div class="ask__row">
+        <input type="text" id="reviewLink" readonly aria-label="Review link">
+        <button class="btn btn--line" id="copyLinkBtn" type="button">Copy link</button>
+        <a class="btn btn--wa" id="shareLinkBtn" target="_blank" rel="noopener">Send on WhatsApp</a>
+      </div>
+    </section>
+
+    <div class="tabs tabs--3" role="tablist" aria-label="Filter reviews">
+      <button role="tab" class="tab tab--new" data-rfilter="pending" aria-selected="true">Waiting <b id="rc-pending">0</b></button>
+      <button role="tab" class="tab tab--completed" data-rfilter="approved" aria-selected="false">On website <b id="rc-approved">0</b></button>
+      <button role="tab" class="tab" data-rfilter="hidden" aria-selected="false">Hidden <b id="rc-hidden">0</b></button>
+    </div>
+    <p class="msg" id="rmsg" role="status"></p>
+    <ul class="list" id="rlist"></ul>
+  </main>
+</div>
+
+<template id="rowTpl">
+  <li class="card">
+    <div class="card__top">
+      <div>
+        <h2 class="card__name"></h2>
+        <p class="card__date"></p>
+      </div>
+      <div class="status" role="group" aria-label="Status">
+        <button type="button" data-status="new">New</button>
+        <button type="button" data-status="contacted">Contacted</button>
+        <button type="button" data-status="completed">Completed</button>
+      </div>
+    </div>
+    <dl class="card__grid">
+      <div><dt>Service</dt><dd class="f-service"></dd></div>
+      <div><dt>Hours</dt><dd class="f-req"></dd></div>
+      <div><dt>Caregiver</dt><dd class="f-care"></dd></div>
+      <div><dt>Location</dt><dd class="f-loc"></dd></div>
+      <div><dt>Phone</dt><dd class="f-phone"></dd></div>
+    </dl>
+    <p class="card__msg"></p>
+    <div class="card__actions">
+      <a class="btn btn--blue a-call">Call</a>
+      <a class="btn btn--wa a-wa" target="_blank" rel="noopener">WhatsApp</a>
+      <button class="btn btn--text a-del" type="button">Delete</button>
+    </div>
+    <label class="notes">
+      <span>Notes (saved automatically)</span>
+      <textarea rows="2" placeholder="e.g. Called on Monday, caregiver starts Friday"></textarea>
+    </label>
+  </li>
+</template>
+
+<template id="reviewTpl">
+  <li class="card rcard">
+    <div class="card__top">
+      <div>
+        <h2 class="card__name"></h2>
+        <p class="card__date"></p>
+      </div>
+      <span class="rstars"></span>
+    </div>
+    <p class="rmeta"></p>
+    <p class="card__msg rtext"></p>
+    <div class="card__actions">
+      <button class="btn btn--green a-approve" type="button">Show on website</button>
+      <button class="btn btn--line a-hide" type="button">Hide</button>
+      <button class="btn btn--text a-rdel" type="button">Delete</button>
+    </div>
+  </li>
+</template>
+
+<script type="module" src="/src/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /api/
+
+# PLACEHOLDER: replace with the real domain
+Sitemap: https://www.satyasrihomecare.com/sitemap.xml
